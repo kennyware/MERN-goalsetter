@@ -1,4 +1,9 @@
 import {useState, useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import {toast} from 'react-toastify'
+import  {register, reset} from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -10,6 +15,11 @@ function Register() {
 
     const {name, email, password, password2} = formData;
 
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const {user, isError, isSuccess, isLoading, message} = useSelector((state) => state.auth)
+
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -19,6 +29,34 @@ function Register() {
 
     const onSubmit = (e) => {
         e.preventDefault()
+
+        if(password !== password2) {
+            toast.error('Passwords do not match')
+        } else {
+            const userData = {
+                name,
+                email,
+                password
+            }
+
+            dispatch(register(userData))
+        }
+    }
+
+    useEffect(() => {
+        if(isError) {
+            toast.error(message)
+        }
+
+        if(isSuccess || user) {
+            navigate('/')
+        }
+
+        dispatch(reset())
+    },[isError, isSuccess, user, message, navigate, dispatch])
+
+    if(isLoading) {
+        return <Spinner />
     }
 
   return <>
@@ -38,11 +76,11 @@ function Register() {
             </div>
             <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="text" id='password' name='password' value={password} className='form-control' onChange={onChange} />
+                <input type="password" id='password' name='password' value={password} className='form-control' onChange={onChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="password2">Confirm Password</label>
-                <input type="text" id='password2' name='password2' value={password2} className='form-control' onChange={onChange} />
+                <input type="password" id='password2' name='password2' value={password2} className='form-control' onChange={onChange} />
             </div>   
             <div className="form-group">
                 <button className="btn btn-dark btn-block" type='submit'>Submit</button>
