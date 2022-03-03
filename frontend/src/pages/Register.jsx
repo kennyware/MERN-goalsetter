@@ -62,7 +62,7 @@ function Register() {
   return <>
     <section className='heading'>
         <h1>Register</h1>
-        <p>Please create and account</p>
+        <p>Please create an account</p>
     </section>
     <section className='form'>
         <form onSubmit={onSubmit}>

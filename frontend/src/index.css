@@ -45,3 +45,28 @@ li a {
 .icon {
   margin-right: 5px;
 }
+
+.goals {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.goal {
+  background-color: #ddd;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+  position: relative;
+  padding: 15px;
+  margin: 20px;
+}
+
+.close-btn {
+  outline: none;
+  border: none;
+  background: none;
+  position: absolute;
+  top: 0;
+  right: 20px;
+}
